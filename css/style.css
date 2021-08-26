@@ -94,10 +94,6 @@ h6 {
   src: url("../../assets/fonts/PragmaticaC.woff");
 }
 
-body{
-  overflow: hidden;
-}
-
 .burger-menu {
   transition: .5s;
   transform: translateY(-3000px);
@@ -193,7 +189,6 @@ body{
 }
 
 .protection {
-  height: 100%;
   position: relative;
   max-width: 1024px;
   width: 100%;
@@ -732,12 +727,7 @@ P {
   width: 100%;
 }
 
-
-
 .spiner {
-  top: calc( 50% - 250px);
-  left: calc( 50% - 10px);
-  position: fixed;
   margin-top: 150px;
   display: flex;
   justify-content: center;
@@ -832,7 +822,8 @@ P {
 }
 
 .lada .btn-buy,
-.lada .btn-send-to-server {
+.lada .btn-send-to-server,
+.lada .btn-accept {
   background: linear-gradient(90deg, #ff8118 0%, #fd7e14 50%, #fcb045 100%);
 }
 

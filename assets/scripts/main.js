@@ -1,7 +1,7 @@
-import {requestRun} from './ajax.js';
-import { editStyleForBrand} from "./editStyle.js";
+import { requestRun } from './ajax.js';
+import { editStyleForBrand } from "./editStyle.js";
 
-let url = 'http://omg.aps.by/server/'
+let url = 'https://omg.aps.by/server/'
 let id = parseUrl()
 
 
@@ -16,9 +16,9 @@ requestRun(url + 'check-id/?id=' + id, 'GET').then((data) => {
     if (data) {
         showSite(data)
         editStyleForBrand(data.brand.name)
-       
+
     }
-  
+
 })
 
 
@@ -36,6 +36,7 @@ function showSite(data) {
 function hideSpiner() {
     let spiner = document.querySelector('.spiner')
     let wrapper = document.querySelector('.protection__wrapper')
+    document.body.style.overflow='unset'
     spiner.classList.add('hide')
     wrapper.classList.remove('hide')
 }
@@ -65,17 +66,23 @@ function moveBurgerMenu(opacity, translateY) {
 }
 
 
-
 function addEventForHeaderNavMenu() {
     let headerMenu = document.querySelector('.burger-menu__nav ul')
     headerMenu.addEventListener('click', (e) => {
         moveBurgerMenu(0, -3000)
         moveToCurrentBlock(e.target.attributes['data-name'].value)
+
+
     })
 }
 function moveToCurrentBlock(target) {
     let currentBlock = document.getElementById(target)
-    currentBlock.scrollIntoView({ block: "end", inline: "start", behavior: "smooth" });
+    let pixelMove = currentBlock.getBoundingClientRect().top + window.scrollY
+    let headerHeight = document.querySelector('.header').getBoundingClientRect().height
+    window.scrollTo({
+        top: pixelMove - headerHeight -10,
+        behavior: "smooth"
+    })
 }
 function addEventForBtnMoreInfo() {
     let btnMoreInfo = document.querySelector('.main-first-screen__more-info')
@@ -92,17 +99,17 @@ function showOrCloseFormBlock() {
 function addEventForBtnBuy() {
     let btnBuy = document.querySelectorAll('.btn-buy')
     let btnSendToServer = document.querySelector('.btn-send-to-server')
-   
+
     btnBuy.forEach(button => {
         button.addEventListener('click', (e) => {
-            
+
             btnSendToServer.setAttribute('data-name', e.target.innerHTML)
 
             showFormBlock()
             closeFormBlock()
         })
     });
-    
+
 }
 
 function showFormBlock() {
@@ -182,18 +189,18 @@ function sendData() {
     let btnSendToServer = document.querySelector('.btn-send-to-server')
     let form = document.querySelector('.form')
     let acceptBlock = document.querySelector('.accept-block')
-    
-    /*  let tryAgainBlock = document.querySelector('.try-again-block') */
-    
+
+
+
     btnSendToServer.addEventListener('click', (e) => {
         let inputPhone = document.querySelector('.form-block label[name="phone"] input')
-       
+
         if (inputPhone.value.length === 13) {
             form.classList.add('no-active')
-         
+
             let data = createData(e.currentTarget.attributes['data-name'].value)
-           console.log(data)
-            requestRun(url + 'set-answer', 'POST',data).then((data) => {
+            console.log(data)
+            requestRun(url + 'set-answer', 'POST', data).then((data) => {
                 acceptBlock.classList.remove('no-active')
             })
 
@@ -207,14 +214,14 @@ function sendData() {
                 }
             })
         }
-       
+
     })
 }
 
 function createData(type) {
     let inputNameValue = document.querySelector('.form-block label[name="name"] input').value
     let inputPhoneValue = document.querySelector('.form-block label[name="phone"] input').value
-    return {'id':id ,'name': inputNameValue.trim(), 'phone': inputPhoneValue.slice(4), 'button': type.trim()}
+    return { 'id': id, 'name': inputNameValue.trim(), 'phone': inputPhoneValue.slice(4), 'button': type.trim() }
 }
 
 function setDefaultNameAndPhone(data) {
